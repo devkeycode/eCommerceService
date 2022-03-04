@@ -7,10 +7,15 @@
  */
 
 const controller = require("../controllers/category.controller");
+const { requestValidator } = require("../middlewares");
 
 module.exports = function (app) {
   //Route for creating a new category
-  app.post("/ecommService/api/v1/categories", controller.create);
+  app.post(
+    "/ecommService/api/v1/categories",
+    [requestValidator.validateCategoryRequest],
+    controller.create
+  );
 
   //Route for getting all the categories
   //Also this is the Route for getting the category based on the name - filter the result based on the name
@@ -20,7 +25,11 @@ module.exports = function (app) {
   app.get("/ecommService/api/v1/categories/:id", controller.findOne);
 
   //Route for updating the category
-  app.put("/ecommService/api/v1/categories/:id", controller.update);
+  app.put(
+    "/ecommService/api/v1/categories/:id",
+    [requestValidator.validateCategoryRequest],
+    controller.update
+  );
 
   //Route for deleting the category
   app.delete("/ecommService/api/v1/categories/:id", controller.delete);

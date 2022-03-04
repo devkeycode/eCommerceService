@@ -7,10 +7,15 @@
  */
 
 const controller = require("../controllers/product.controller");
+const { requestValidator } = require("../middlewares");
 
 module.exports = function (app) {
   //Route for creating a new product
-  app.post("/ecommService/api/v1/products", controller.create);
+  app.post(
+    "/ecommService/api/v1/products",
+    [requestValidator.validateProductRequest],
+    controller.create
+  );
 
   //Route for getting all the products
   //Also this is the Route for getting the product based on the name - filter the result based on the name
@@ -20,8 +25,19 @@ module.exports = function (app) {
   app.get("/ecommService/api/v1/products/:id", controller.findOne);
 
   //Route for updating the product
-  app.put("/ecommService/api/v1/products/:id", controller.update);
+  app.put(
+    "/ecommService/api/v1/products/:id",
+    [requestValidator.validateProductRequest],
+    controller.update
+  );
 
   //Route for deleting the product
   app.delete("/ecommService/api/v1/products/:id", controller.delete);
+
+  //Route for getting list of products based on a specific category
+  app.get(
+    "/ecommService/api/v1/categories/:categoryId/products",
+    [requestValidator.validateCategoryPassedInReqParam],
+    controller.getProductsUnderCategory
+  );
 };

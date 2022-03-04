@@ -17,11 +17,13 @@ exports.create = (req, res) => {
   /**
    * Validation of request body
    */
+  /* //since validation of request body is now done in middleware itself before request arrived at controller function, so no need to check in controller function
   if (!req.body.name) {
     res.status(400).send({ message: "Name of the category can't be empty!" });
     return;
   }
   //in validation of request body, only checking name, since in the category schema, we defined it as allowNull to false, means it is mandatory a category must have name, but description in the category schema, we haven't define (set explicitly) allowNull to false , which means it set by default to allowNull to true.
+  */
 
   //extracting the data from the request body
   const category = {
@@ -89,8 +91,8 @@ exports.findOne = (req, res) => {
   const categoryId = req.params.id; //extracting the id from req.params
 
   Category.findByPk(categoryId)
-    .then((categoryId) => {
-      res.status(200).send(categoryId);
+    .then((category) => {
+      res.status(200).send(category);
     })
     .catch((err) => {
       res.status(500).send({
@@ -111,13 +113,16 @@ exports.update = (req, res) => {
   /**
    * Validation of the request body
    */
-
+  /*
+  //since validation of request body is now done in middleware itself before request arrived at controller function, so no need to check in controller function
+  
   if (!req.body.name) {
     res.status(400).send({
       message: "Name of the category can't be empty !",
     });
     return;
   }
+  */
 
   /**
    * Creation of the Category object to be stored in the DB

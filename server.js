@@ -17,6 +17,17 @@ app.use(bodyParser.json());
  */
 const db = require("./models");
 const Category = db.category;
+const Product = db.product;
+
+/**
+ * Establishing relation among Category and Product before creating the table
+ * Category can have many products
+ * Product can belong to one Category
+ * 1:Many relationship among Category and Product
+ * Product will have extra coulmn indicating categoryId that acts as foreign key here
+ * Sequelize automatically create another column named categoryId(since we written Category.hasMany(Product) , it means Product can belong to a particular category , so a categoryId named column will be created in Product table in mysql)
+ */
+Category.hasMany(Product);
 
 /**
  * Creating  the tables in the database based on the schemas defined

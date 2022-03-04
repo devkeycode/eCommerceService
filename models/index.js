@@ -29,12 +29,13 @@ const sequelize = new Sequelize(DB, USER, PASSWORD, {
 });
 
 /**
- * To expose the sequelize db connection and Sequelize class and models , creating an object named db ,which will be exporting from this file for further use
+ * To expose the sequelize db connection and Sequelize class and models/schemas , creating an object named db ,which will be exporting from this file for further use
  */
 
 const db = {};
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 db.category = require("./category.model")(sequelize, Sequelize);
+db.product = require("./product.model")(sequelize, Sequelize);
 
 module.exports = db;

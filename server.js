@@ -33,6 +33,7 @@ db.sequelize
 
 //Initialize the routes
 require("./routes/category.route")(app);
+require("./routes/product.route")(app);
 
 //starting the server
 app.listen(serverConfig.PORT, () => {

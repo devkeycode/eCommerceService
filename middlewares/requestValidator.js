@@ -1,5 +1,5 @@
 /**
- * This file will consists of validating the incoming requests bodies
+ * This file will consists the logic of validating the incoming requests bodies
  */
 const db = require("../models");
 const Category = db.category;

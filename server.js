@@ -18,6 +18,7 @@ app.use(bodyParser.json());
 const db = require("./models");
 const Category = db.category;
 const Product = db.product;
+const Role = db.role;
 
 /**
  * Establishing relation among Category and Product before creating the table
@@ -43,8 +44,9 @@ db.sequelize
   });
 
 //Initialize the routes
-require("./routes/category.route")(app);
-require("./routes/product.route")(app);
+require("./routes/category.routes")(app);
+require("./routes/product.routes")(app);
+require("./routes/auth.routes")(app);
 
 //starting the server
 app.listen(serverConfig.PORT, () => {
@@ -77,5 +79,25 @@ function init() {
     })
     .catch((err) => {
       console.log("Error while initializing categories table");
+    });
+
+  /**Create the roles */
+  const roles = [
+    {
+      id: 1,
+      name: "user",
+    },
+    {
+      id: 2,
+      name: "admin",
+    },
+  ];
+
+  Role.bulkCreate(roles)
+    .then(() => {
+      console.log("roles are added");
+    })
+    .catch((err) => {
+      console.log("Error in initialising the categories", categories);
     });
 }

@@ -7,13 +7,17 @@
  */
 
 const controller = require("../controllers/category.controller");
-const { requestValidator } = require("../middlewares");
+const { requestValidator, authJwt } = require("../middlewares");
 
 module.exports = function (app) {
   //Route for creating a new category
   app.post(
     "/ecommService/api/v1/categories",
-    [requestValidator.validateCategoryRequest],
+    [
+      requestValidator.validateCategoryRequest,
+      authJwt.verifyToken,
+      authJwt.isAdmin,
+    ],
     controller.create
   );
 
@@ -27,10 +31,18 @@ module.exports = function (app) {
   //Route for updating the category
   app.put(
     "/ecommService/api/v1/categories/:id",
-    [requestValidator.validateCategoryRequest],
+    [
+      requestValidator.validateCategoryRequest,
+      authJwt.verifyToken,
+      authJwt.isAdmin,
+    ],
     controller.update
   );
 
   //Route for deleting the category
-  app.delete("/ecommService/api/v1/categories/:id", controller.delete);
+  app.delete(
+    "/ecommService/api/v1/categories/:id",
+    [authJwt.verifyToken, authJwt.isAdmin],
+    controller.delete
+  );
 };

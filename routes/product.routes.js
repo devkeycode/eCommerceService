@@ -7,13 +7,17 @@
  */
 
 const controller = require("../controllers/product.controller");
-const { requestValidator } = require("../middlewares");
+const { requestValidator, authJwt } = require("../middlewares");
 
 module.exports = function (app) {
   //Route for creating a new product
   app.post(
     "/ecommService/api/v1/products",
-    [requestValidator.validateProductRequest],
+    [
+      requestValidator.validateProductRequest,
+      authJwt.verifyToken,
+      authJwt.isAdmin,
+    ],
     controller.create
   );
 
@@ -27,12 +31,20 @@ module.exports = function (app) {
   //Route for updating the product
   app.put(
     "/ecommService/api/v1/products/:id",
-    [requestValidator.validateProductRequest],
+    [
+      requestValidator.validateProductRequest,
+      authJwt.verifyToken,
+      authJwt.isAdmin,
+    ],
     controller.update
   );
 
   //Route for deleting the product
-  app.delete("/ecommService/api/v1/products/:id", controller.delete);
+  app.delete(
+    "/ecommService/api/v1/products/:id",
+    [authJwt.verifyToken, authJwt.isAdmin],
+    controller.delete
+  );
 
   //Route for getting list of products based on a specific category
   app.get(
